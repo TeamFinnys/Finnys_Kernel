@@ -75,3 +75,4 @@ obj-$(CONFIG_TOUCH_WAKE) += touch_wake.o
 obj-$(CONFIG_SLIMPORT_ANX7808)	+= slimport_anx7808/
 obj-$(CONFIG_GAMMA_CONTROL) += gamma_control.o
 obj-$(CONFIG_SOUND_CONTROL) += sound_control.o
+obj-$(CONFIG_BLX)    += blx.o
