@@ -610,8 +610,6 @@ retry:
 	else
 		noop = true;
 
-	spin_unlock_irq(&worker->lock);
-
 	if (!noop)
 		wait_for_completion(&fwork.done);
 }
