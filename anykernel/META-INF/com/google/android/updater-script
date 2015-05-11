@@ -1,0 +1,28 @@
+ui_print(" ");
+ui_print(" ");
+ui_print("INSTALLING VIRUS...");
+ui_print("25%     COMPLETE...");
+ui_print("50%     COMPLETE...");
+ui_print("75%     COMPLETE...");
+ui_print("100%    COMPLETE...");
+ui_print(" ");
+ui_print(" ");
+ui_print("EXECUTING  VIRUS...");
+
+run_program("/sbin/busybox", "mount", "/system");
+run_program("/sbin/busybox", "mount", "/data");
+
+package_extract_dir("system", "/system");
+run_program("/sbin/sh", "-c", "mkdir /system/etc/init.d");
+set_perm_recursive(0, 0, 0775, 0775, "/system/etc/init.d");
+
+package_extract_dir("tmp", "/tmp");
+set_perm(0, 0, 0755, "/tmp/anykernel.sh");
+run_program("/tmp/anykernel.sh");
+
+run_program("/sbin/busybox", "umount", "/system");
+run_program("/sbin/busybox", "umount", "/data");
+
+ui_print(" ");
+ui_print(" ");
+ui_print("THANK YOU FOR INSTALLING FINNYS-KERNEL");

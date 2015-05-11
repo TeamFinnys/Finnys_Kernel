@@ -1,0 +1,10 @@
+# Finnys-Kernel Extras
+
+on boot
+
+# Executes /system/etc/init.d scripts
+service userinit /system/xbin/busybox run-parts /system/etc/init.d
+    class late_start
+    user root
+    oneshot
+    group root
