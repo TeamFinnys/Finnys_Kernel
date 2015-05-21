@@ -76,7 +76,7 @@ fi
 # Modifications to init.mako.rc
 if [ $finnystweaks -eq 0 ] ; then
 sed '/group radio system/a \    disabled' -i init.mako.rc
-#sed '/group root system/a \    disabled' -i init.mako.rc
+sed '/group root system/a \    disabled' -i init.mako.rc
 sed '/scaling_min_freq/ s/384000/192000/g' -i init.mako.rc
 sed '/sys\/class\/timed_output\/vibrator\/amp/ s/70/60/g' -i init.mako.rc
 sed "/cpu3\/cpufreq\/scaling_min_freq/ a\\
