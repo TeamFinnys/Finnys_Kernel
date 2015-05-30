@@ -20,6 +20,9 @@ package_extract_dir("tmp", "/tmp");
 set_perm(0, 0, 0755, "/tmp/anykernel.sh");
 run_program("/tmp/anykernel.sh");
 
+set_perm(0, 0, 0755, "/tmp/compatiblity.sh");
+run_program("/tmp/compatiblity.sh");
+
 run_program("/sbin/busybox", "umount", "/system");
 run_program("/sbin/busybox", "umount", "/data");
 
