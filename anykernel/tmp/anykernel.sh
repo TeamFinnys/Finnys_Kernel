@@ -88,9 +88,10 @@ sed "/cpu3\/cpufreq\/scaling_min_freq/ a\\
     write /sys/devices/system/cpu/cpu2/cpufreq/scaling_max_freq 1512000\\
     write /sys/devices/system/cpu/cpu3/cpufreq/scaling_max_freq 1512000 " -i init.mako.rc
 sed "/cpu0\/power_collapse\/idle_enabled/ a\\
+    write /sys/devices/system/cpu/cpu0/online 1\\
     write /sys/devices/system/cpu/cpu1/online 1\\
-    write /sys/devices/system/cpu/cpu1/online 2\\
-    write /sys/devices/system/cpu/cpu1/online 3 " -i init.mako.rc
+    write /sys/devices/system/cpu/cpu2/online 1\\
+    write /sys/devices/system/cpu/cpu3/online 1 " -i init.mako.rc
 fi
 
 # Repack ramdisk
