@@ -80,7 +80,7 @@ fi
 if [ $finnystweaks -eq 0 ] ; then
 sed '/group radio system/a \    disabled' -i init.mako.rc
 sed '/group root system/a \    disabled' -i init.mako.rc
-sed '/scaling_min_freq/ s/384000/192000/g' -i init.mako.rc
+#sed '/scaling_min_freq/ s/384000/192000/g' -i init.mako.rc
 sed '/sys\/class\/timed_output\/vibrator\/amp/ s/70/60/g' -i init.mako.rc
 sed "/cpu3\/cpufreq\/scaling_min_freq/ a\\
     write /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq 1512000\\
@@ -92,6 +92,49 @@ sed "/cpu0\/power_collapse\/idle_enabled/ a\\
     write /sys/devices/system/cpu/cpu1/online 1\\
     write /sys/devices/system/cpu/cpu2/online 1\\
     write /sys/devices/system/cpu/cpu3/online 1 " -i init.mako.rc
+fi
+
+# Modifications to fstab.mako
+fstabfile="fstab.mako"
+
+if ! grep -q /system /etc/mtab ; then
+    mount /system
+fi
+FORMAT_SYS=$(grep /system /etc/mtab | awk '{print $3}')
+umount /system
+
+if ! grep -q /data /etc/mtab ; then
+    mount /dev/block/platform/msm_sdcc.1/by-name/userdata /data
+fi
+FORMAT_DAT=$(grep /data /etc/mtab | awk '{print $3}')
+
+if ! grep -q /cache /etc/mtab ; then
+    mount /dev/block/platform/msm_sdcc.1/by-name/cache /cache
+fi
+FORMAT_CAC=$(grep /cache /etc/mtab | awk '{print $3}')
+
+# Writting /system
+echo "Writting /system to $FORMAT_SYS"
+if [ "$FORMAT_SYS" = "f2fs" ]; then
+    sed -e '/by-name\/system/c\\/dev\/block\/platform\/msm_sdcc.1\/by-name\/system       \/system         f2fs    ro,noatime,nosuid,nodev,discard,nodiratime,inline_xattr,inline_data,nobarrier,active_logs=4  wait' -i $fstabfile
+elif [ "$FORMAT_SYS" = "ext4" ]; then
+    sed -e '/by-name\/system/c\\/dev\/block\/platform\/msm_sdcc.1\/by-name\/system       \/system         ext4    ro,noatime,barrier=1                                           wait' -i $fstabfile
+fi
+
+# Writting /cache
+echo "Writting /cache to $FORMAT_CAC"
+if [ "$FORMAT_CAC" = "f2fs" ]; then
+    sed -e '/by-name\/cache/c\\/dev\/block\/platform\/msm_sdcc.1\/by-name\/cache        \/cache          f2fs    noatime,nosuid,nodev,discard,nodiratime,inline_xattr,inline_data,nobarrier,active_logs=4       wait,check' -i $fstabfile
+elif [ "$FORMAT_CAC" = "ext4" ]; then
+    sed -e '/by-name\/cache/c\\/dev\/block\/platform\/msm_sdcc.1\/by-name\/cache        \/cache          ext4    noatime,nosuid,nodev,barrier=1,data=ordered    wait,check' -i $fstabfile
+fi
+
+# Writting /data
+echo "Writting /DATA to $FORMAT_DAT"
+if [ "$FORMAT_DAT" = "f2fs" ]; then
+    sed -e '/by-name\/userdata/c\\/dev\/block\/platform\/msm_sdcc.1\/by-name\/userdata     \/data           f2fs    noatime,nosuid,nodev,discard,nodiratime,inline_xattr,inline_data,nobarrier,active_logs=4       wait,check,encryptable=/dev/block/platform/msm_sdcc.1/by-name/metadata' -i $fstabfile
+elif [ "$FORMAT_DAT" = "ext4" ]; then
+    sed -e '/by-name\/userdata/c\\/dev\/block\/platform\/msm_sdcc.1\/by-name\/userdata     \/data           ext4    noatime,nosuid,nodev,barrier=1,data=ordered,noauto_da_alloc    wait,check,encryptable=/dev/block/platform/msm_sdcc.1/by-name/metadata' -i $fstabfile
 fi
 
 # Repack ramdisk
