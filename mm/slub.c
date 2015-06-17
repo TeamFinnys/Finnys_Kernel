@@ -4525,7 +4525,7 @@ static ssize_t show_slab_objects(struct kmem_cache *s,
 			}
 			page = c->partial;
 
-			if (page) {
+			/*if (page) {
 				node = page_to_nid(page);
 				if (flags & SO_TOTAL)
 					WARN_ON_ONCE(1);
@@ -4535,7 +4535,7 @@ static ssize_t show_slab_objects(struct kmem_cache *s,
 					x = page->pages;
 				total += x;
 				nodes[node] += x;
-			}
+			}*/
 			per_cpu[node]++;
 		}
 	}
