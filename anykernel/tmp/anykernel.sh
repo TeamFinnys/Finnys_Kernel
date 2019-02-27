@@ -25,11 +25,9 @@ rm -r init.performance_profiles.rc
 
 # Copy finnys tweaks
 cp ../init.finnys_kernel.rc ./
-cp ../init.performance_profiles.rc ./
 
 # Add permissions to be executable
 chmod 0755 init.finnys_kernel.rc
-chmod 0755 init.performance_profiles.rc
 
 # Import extra init.*.rc
 if [ $finnystweaks -eq 0 ] ; then
@@ -80,13 +78,13 @@ fi
 if [ $finnystweaks -eq 0 ] ; then
 sed '/group radio system/a \    disabled' -i init.mako.rc
 sed '/group root system/a \    disabled' -i init.mako.rc
-#sed '/scaling_min_freq/ s/384000/192000/g' -i init.mako.rc
+sed '/scaling_min_freq/ s/384000/192000/g' -i init.mako.rc
 sed '/sys\/class\/timed_output\/vibrator\/amp/ s/70/60/g' -i init.mako.rc
 sed "/cpu3\/cpufreq\/scaling_min_freq/ a\\
-    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq 1512000\\
-    write /sys/devices/system/cpu/cpu1/cpufreq/scaling_max_freq 1512000\\
-    write /sys/devices/system/cpu/cpu2/cpufreq/scaling_max_freq 1512000\\
-    write /sys/devices/system/cpu/cpu3/cpufreq/scaling_max_freq 1512000 " -i init.mako.rc
+    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq 1728000\\
+    write /sys/devices/system/cpu/cpu1/cpufreq/scaling_max_freq 1728000\\
+    write /sys/devices/system/cpu/cpu2/cpufreq/scaling_max_freq 1728000\\
+    write /sys/devices/system/cpu/cpu3/cpufreq/scaling_max_freq 1728000 " -i init.mako.rc
 sed "/cpu0\/power_collapse\/idle_enabled/ a\\
     write /sys/devices/system/cpu/cpu0/online 1\\
     write /sys/devices/system/cpu/cpu1/online 1\\
